@@ -41,9 +41,15 @@ const createYearFile = async (file, mode) => {
 
   for (let i = 1; i <= Math.ceil(chartIds.length / maxChunkLength); ++i) {
     const ids = chunk(chartIds, i);
-    const albumData = await getAlbumBatch(token, ids);
+    let albumData = await getAlbumBatch(token, ids);
 
-    console.log(albumData);
+    if (albumData.error) {
+      //TODO: get correct error message to handle expiration case
+      console.log("!!!ERROR!!!", albumData);
+      const newToken = await getToken();
+      albumData = await getAlbumBatch(newToken, ids);
+    }
+  
     allAlbums = [...allAlbums, ...albumData];
   }
 
