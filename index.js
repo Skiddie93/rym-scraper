@@ -5,7 +5,7 @@ async function init(from, to) {
   await getYears(from, to);
   await loopYears(from, to);
 
-  wait getGenres();
+  await getGenres();
   await loopGenres();
 }
 
