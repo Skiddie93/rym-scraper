@@ -1,6 +1,6 @@
 import puppeteer from "puppeteer";
 import { promises as fs } from "fs";
-
+import * as genres from "../src/genre-list/genres.json";
 //const fs = require("fs");
 
 const scraper = async (year, page, mode) => {
@@ -62,11 +62,15 @@ const scraper = async (year, page, mode) => {
     return filteredData;
   });
 
-  fs.writeFile(`./data/${mode}/${year}.json`, JSON.stringify(albumData), (err) => {
-    err
-      ? console.log(err)
-      : console.log(`File written successfully for ${year}\n`);
-  });
+  fs.writeFile(
+    `../data/charts-${mode}/${year}.json`,
+    JSON.stringify(albumData),
+    (err) => {
+      err
+        ? console.log(err)
+        : console.log(`File written successfully for ${year}\n`);
+    }
+  );
   console.log(`File written successfully for ${year}\n`);
   console.log(`Waiting a minute\n`);
   // Close browser.
@@ -85,58 +89,13 @@ export const getYears = async (from, to) => {
 
     // Go to your site
     await page.goto(url);
-    await scraper(i.toString(), page,"years");
+    await scraper(i.toString(), page, "years");
   }
 
   browser.close();
 };
 
 export const getGenres = async () => {
-  const genres = [
-    "ambient",
-    "blues",
-    "classical-music",
-    "country",
-    "dance",
-    "electronic",
-    "experimental",
-    "folk",
-    "hip-hop",
-    "industrial-and-noise",
-    "jazz",
-    "metal",
-    "musical-theatre-and-entertainment",
-    "new-age",
-    "pop",
-    "psychedelia",
-    "punk",
-    "randb",
-    "regional-music",
-    "rock",
-    "singer-songwriter",
-    "spoken-word",
-    "ambient-pop",
-    "asmr",
-    "beatboxing",
-    "bugle-call",
-    "comedy",
-    "dark-cabaret",
-    "darkwave",
-    "easy-listening",
-    "field-recordings",
-    "gospel",
-    "hanmai",
-    "mantra",
-    "marching-band",
-    "mashup",
-    "mechanical-music",
-    "shibuya-kei",
-    "ska",
-    "sound-effects",
-    "visual-kei",
-    "ytpmv",
-  ];
-
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
 

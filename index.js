@@ -1,12 +1,17 @@
-import { getYears, getGenres } from "./utils/puppeteer.js"
-import { loopYears, loopGenres } from "./utils/makeYearCharts.js"
+import express from "express";
+import years from "./routes/years.js";
+import genres from "./routes/genres.js";
 
-async function init(from, to) {
-  await getYears(from, to);
-  await loopYears(from, to);
+const app = express();
+const port = 5151;
 
-  await getGenres();
-  await loopGenres();
-}
+app.get("/", (req, res) => {
+  res.json("Hello World!");
+});
 
-init(2023, 2024);
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
+
+app.use("/charts/years/", years);
+app.use("/charts/genres/", genres);

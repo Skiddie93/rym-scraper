@@ -1,11 +1,11 @@
-import { getToken, getAlbumBatch } from "./getToken.js";
+import { getToken, getAlbumBatch } from "./utils/getToken.js";
 import { promises as fs } from "fs";
-
+import * as genres from "../src/genre-list/genres.json";
 let token;
 
 const getChartFile = async (files, mode) => {
   const data = await fs.readFile(
-    `./data/${mode}/${files}.json`,
+    `./data/charts-${mode}/${files}.json`,
     "utf8",
     (err, data) => {
       if (err) throw err;
@@ -41,20 +41,14 @@ const createYearFile = async (file, mode) => {
 
   for (let i = 1; i <= Math.ceil(chartIds.length / maxChunkLength); ++i) {
     const ids = chunk(chartIds, i);
-    let albumData = await getAlbumBatch(token, ids);
+    const albumData = await getAlbumBatch(token, ids);
 
-    if (albumData.error) {
-      //TODO: get correct error message to handle expiration case
-      console.log("!!!ERROR!!!", albumData);
-      const newToken = await getToken();
-      albumData = await getAlbumBatch(newToken, ids);
-    }
-  
+    console.log(albumData);
     allAlbums = [...allAlbums, ...albumData];
   }
 
   await fs.writeFile(
-    `./data/charts-${mode}/${file}.json`,
+    `./data/${mode}/${file}.json`,
     JSON.stringify(allAlbums),
     (err) => {
       if (err) console.log(err);
@@ -79,50 +73,6 @@ export const loopYears = async (from, to) => {
 };
 
 export const loopGenres = async () => {
-  const genres = [
-    "ambient",
-    "blues",
-    "classical-music",
-    "country",
-    "dance",
-    "electronic",
-    "experimental",
-    "folk",
-    "hip-hop",
-    "industrial-and-noise",
-    "jazz",
-    "metal",
-    "musical-theatre-and-entertainment",
-    "new-age",
-    "pop",
-    "psychedelia",
-    "punk",
-    "randb",
-    "regional-music",
-    "rock",
-    "singer-songwriter",
-    "spoken-word",
-    "ambient-pop",
-    "asmr",
-    "beatboxing",
-    "bugle-call",
-    "comedy",
-    "dark-cabaret",
-    "darkwave",
-    "easy-listening",
-    "field-recordings",
-    "gospel",
-    "hanmai",
-    "mantra",
-    "marching-band",
-    "mashup",
-    "mechanical-music",
-    "shibuya-kei",
-    "ska",
-    "sound-effects",
-    "visual-kei",
-    "ytpmv",
-  ];
   token = await getToken();
 
   for (const genre of genres) {

@@ -1,12 +1,8 @@
 import fetch from "node-fetch";
-import 'dotenv/config'
-
-export const getToken = async (test) => {
-
-
-  const clientId = process.env.CLIENT_ID;
-  const clientSecret = process.env.CLIENT_SECRET
-
+import { promises as fs } from "fs";
+export const getToken = async () => {
+  const clientId = "c703602474a54816affc20f4ad019042";
+  const clientSecret = "dfea120f8eb5452f995c8ef9199c423f";
 
   const params = {
     method: "POST",
@@ -21,6 +17,7 @@ export const getToken = async (test) => {
 
   const accessToken = data.access_token;
 
+  console.log(accessToken);
 
   return accessToken;
 };
@@ -30,11 +27,13 @@ export const getAlbumBatch = async (token, id) => {
     headers: {
       Authorization: "Bearer " + token,
     },
-  })
+  }).catch((err) => {
+    console.log("error:", err);
+  });
 
-  let item = await req.json();
+  const item = await req.json();
+
   console.log(item);
-  if(item.error) return item
 
   const makeData = item.albums.map((albums) => {
     return {
