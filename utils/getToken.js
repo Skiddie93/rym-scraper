@@ -1,8 +1,9 @@
 import fetch from "node-fetch";
-import { promises as fs } from "fs";
+import "dotenv/config";
+
 export const getToken = async () => {
-  const clientId = "c703602474a54816affc20f4ad019042";
-  const clientSecret = "dfea120f8eb5452f995c8ef9199c423f";
+  const clientId = process.env.CLIENT_ID;
+  const clientSecret = process.env.CLIENT_SECRET;
 
   const params = {
     method: "POST",

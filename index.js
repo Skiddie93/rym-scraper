@@ -1,13 +1,10 @@
 import express from "express";
 import years from "./routes/years.js";
 import genres from "./routes/genres.js";
+import "dotenv/config";
 
 const app = express();
-const port = 5151;
-
-app.get("/", (req, res) => {
-  res.json("Hello World!");
-});
+const port = process.env.PORT;
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
