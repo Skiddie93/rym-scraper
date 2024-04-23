@@ -10,7 +10,7 @@ years.get(`/`, async (req, res) => {
   for (let i = 1945; i <= 2024; i++) {
     yearsData.push({
       name: i.toString(),
-      url: `${baseURL}${i}`,
+      url: `${baseURL}/${i}`,
     });
   }
 

@@ -1,6 +1,9 @@
 import puppeteer from "puppeteer";
 import { promises as fs } from "fs";
-import * as genres from "../src/genre-list/genres.json";
+import { createRequire } from "node:module";
+const require = createRequire(import.meta.url);
+
+const genres = require("../src/genre-list/genres.json");
 //const fs = require("fs");
 
 const scraper = async (year, page, mode) => {
@@ -63,7 +66,7 @@ const scraper = async (year, page, mode) => {
   });
 
   fs.writeFile(
-    `../data/charts-${mode}/${year}.json`,
+    `./data/charts-${mode}/${year}.json`,
     JSON.stringify(albumData),
     (err) => {
       err

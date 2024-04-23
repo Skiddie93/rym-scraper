@@ -1,6 +1,9 @@
-import { getToken, getAlbumBatch } from "./utils/getToken.js";
+import { getToken, getAlbumBatch } from "./getToken.js";
 import { promises as fs } from "fs";
-import * as genres from "../src/genre-list/genres.json";
+import { createRequire } from "node:module";
+const require = createRequire(import.meta.url);
+
+const genres = require("../src/genre-list/genres.json");
 let token;
 
 const getChartFile = async (files, mode) => {

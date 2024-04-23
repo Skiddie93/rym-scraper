@@ -5,8 +5,6 @@ const require = createRequire(import.meta.url);
 
 const genresLists = require("../src/genre-list/genres.json");
 
-console.log(genresLists);
-
 const genres = express.Router();
 
 genres.get(`/`, async (req, res) => {
@@ -14,7 +12,7 @@ genres.get(`/`, async (req, res) => {
   const genresData = genresLists.map((item) => {
     return {
       name: item,
-      url: `${baseURL}${item}`,
+      url: `${baseURL}/${item}`,
     };
   });
 
